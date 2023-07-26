@@ -1,0 +1,71 @@
+@layout AuthLayout
+@page "/auth"
+@using Microsoft.Extensions.Logging
+@inject ILogger<Auth> Logger
+@using WebPDSConfirm.Data
+@inject NavigationManager NavManager
+
+<PageTitle>เข้าสู่ระบบ</PageTitle>
+
+<section class="h-100">
+	<div class="container h-100">
+		<div class="row justify-content-sm-center h-100">
+			<div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+				<div class="text-center my-5">
+					<img src="/images/vcs_logo.png" alt="logo" width="180" height="80">
+				</div>
+				<div class="card shadow-lg">
+					<div class="card-body p-5">
+						<h1 class="fs-4 card-title fw-bold mb-4">เข้าสู่ระบบ</h1>
+						<EditForm Model="@authData" OnSubmit="@HandleSubmit">
+							<div class="mb-3">
+								<label class="mb-2 text-muted" for="email">ชื่อผู้ใช้งาน</label>
+								<InputText @bind-Value="authData.UserName" id="username" type="text" class="form-control" name="username" required autofocus />
+								<div class="invalid-feedback">
+									User is invalid
+								</div>
+							</div>
+							<div class="mb-3">
+								<div class="mb-2 w-100">
+									<label class="text-muted" for="password">รหัสผ่าน</label>
+									<a href="/Forget" class="float-end">
+										Forgot Password?
+									</a>
+								</div>
+								<InputText @bind-Value="authData.Password" id="password" type="password" class="form-control" name="password" required />
+							    <div class="invalid-feedback">
+							    	Password is required
+						    	</div>
+							</div>
+							<div class="d-flex align-items-center">
+								<div class="form-check">
+									<InputCheckbox @bind-Value="authData.isRemember" name="remember" id="remember" class="form-check-input" />
+									<label for="remember" class="form-check-label">Remember Me</label>
+								</div>
+								<button type="submit" class="btn btn-primary ms-auto">
+									เข้าสู่ระบบ
+								</button>
+							</div>
+						</EditForm>
+					</div>
+					<div class="card-footer py-3 border-0">
+						<div class="text-center">
+							Don't have an account? <a href="register.html" class="text-dark">Create One</a>
+						</div>
+					</div>
+				</div>
+				<div class="text-center mt-5 text-muted">
+					Copyright &copy; 2017-2021 &mdash; Your Company 
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+@code {
+	private AuthDataModel authData = new();
+	private void HandleSubmit() {
+		Logger.LogInformation($"HandleSubmit called user: {authData.UserName} password: {authData.Password}");
+		NavManager.NavigateTo("/");
+	}
+}
