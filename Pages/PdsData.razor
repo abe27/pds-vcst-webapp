@@ -1,0 +1,66 @@
+﻿@page "/pds"
+@using WebPDSConfirm.Data
+@inject WeatherForecastService ForecastService
+
+<PageTitle>รายการข้อมูล PDS</PageTitle> 
+<h1>รายการข้อมูล PDS</h1>
+
+<p>จัดการรายการข้อมูล</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Ref. No.</th>
+                <th>Supplier</th>
+                <th>Item</th>
+                <th>Amount</th>
+                <th>Vat.</th>
+                <th>Status</th>
+                <th>Update</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <th>1</th>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.Summary</td>
+                    <td>@forecast.Summary</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>
+                        <span class="text-success">Paid</span>
+                    </td>
+                    <td>@forecast.Date</td>
+                    <td>
+                        <button class="btn btn-success btn-sm" onclick="@IncrementConfirm(forecast)">Confirm</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+    }
+
+    private string IncrementConfirm(WeatherForecast obj) {
+        return "Increment";
+    }
+}
