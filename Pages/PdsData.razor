@@ -1,13 +1,11 @@
 ﻿@page "/pds"
 @using WebPDSConfirm.Data
-@inject WeatherForecastService ForecastService
+@inject OrderHeaderService OrderService
 
 <PageTitle>รายการข้อมูล PDS</PageTitle> 
 <h1>รายการข้อมูล PDS</h1>
-
 <p>จัดการรายการข้อมูล</p>
-
-@if (forecasts == null)
+@if (obj == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -29,22 +27,22 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var r in obj)
             {
                 <tr>
-                    <th>1</th>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.Summary</td>
-                    <td>@forecast.Summary</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.TemperatureC</td>
+                    <th>@r.Id</th>
+                    <td>@r.Date.ToShortDateString()</td>
+                    <td>@r.RefNo</td>
+                    <td>@r.Vendor</td>
+                    <td>@r.Item</td>
+                    <td>@r.Amount</td>
+                    <td>@r.Vat</td>
                     <td>
-                        <span class="text-success">Paid</span>
+                        <span class="text-success">@r.Status</span>
                     </td>
-                    <td>@forecast.Date</td>
+                    <td>@r.LastUpdate</td>
                     <td>
-                        <button class="btn btn-success btn-sm" onclick="@IncrementConfirm(forecast)">Confirm</button>
+                        <button class="btn btn-success btn-sm" onclick="@IncrementConfirm(r)">Confirm</button>
                     </td>
                 </tr>
             }
@@ -53,14 +51,14 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private OrderHeader[]? obj;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+        obj = await OrderService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
     }
 
-    private string IncrementConfirm(WeatherForecast obj) {
+    private string IncrementConfirm(object obj) {
         return "Increment";
     }
 }
