@@ -88,7 +88,7 @@ else
         obj = await OrderService.GetForecastAsync(DateOnly.FromDateTime(filter.FilterDate));
     }
 
-    private string CheckStatus(string? txt) {
+    private string CheckStatus(string txt) {
         string className = "text-success";
         if (txt.Length > 5) {
             className = "text-warning";

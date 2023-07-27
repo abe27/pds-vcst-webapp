@@ -11,7 +11,7 @@ public class OrderHeader
     public OrderDetail[]? Item { get; set; }
     public double Amount { get; set; }
     public double Vat { get; set; }
-    public string? Status { get; set; }
+    public string Status { get; set; }
     public int OrderStatus { get; set; }
     public DateTime LastUpdate { get; set; }
 }
