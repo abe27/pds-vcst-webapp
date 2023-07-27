@@ -5,52 +5,74 @@
 <PageTitle>รายการข้อมูล PDS</PageTitle> 
 <h1>รายการข้อมูล PDS</h1>
 <p>จัดการรายการข้อมูล</p>
+<section>
+    <EditForm Model="@filter" OnSubmit="@OnSearch">
+        <div class="row">
+            <div class="col-4">
+                <div class="input-group">
+                    <InputDate @bind-Value="filter.FilterDate" class="form-control" id="filterDate" name="filterDate" />
+                    <button type="submit" class="btn btn-primary">ค้นหา</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</section>
 @if (obj == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Date</th>
-                <th>Ref. No.</th>
-                <th>Supplier</th>
-                <th>Item</th>
-                <th>Amount</th>
-                <th>Vat.</th>
-                <th>Status</th>
-                <th>Update</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var r in obj)
-            {
+    <div class="container-fluid mt-3">
+        <table class="table">
+            <thead>
                 <tr>
-                    <th>@r.Id</th>
-                    <td>@r.Date.ToShortDateString()</td>
-                    <td>@r.RefNo</td>
-                    <td>@r.Vendor</td>
-                    <td>@r.Item</td>
-                    <td>@r.Amount</td>
-                    <td>@r.Vat</td>
-                    <td>
-                        <span class="text-success">@r.Status</span>
-                    </td>
-                    <td>@r.LastUpdate</td>
-                    <td>
-                        <button class="btn btn-success btn-sm" onclick="@IncrementConfirm(r)">Confirm</button>
-                    </td>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Ref. No.</th>
+                    <th>Supplier</th>
+                    <th>Item</th>
+                    <th>Amount</th>
+                    <th>Vat.</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var r in obj)
+                {
+                    <tr>
+                        <th>@r.Id</th>
+                        <td>@r.Date.ToShortDateString()</td>
+                        <td>
+                            <a href="/pds/detail/@r.FcskId">@r.RefNo</a>
+                        </td>
+                        <td>@r.Vendor</td>
+                        <td>@r.Item?.Length</td>
+                        <td>@r.Amount</td>
+                        <td>@r.Vat</td>
+                        <td>
+                            <span class="@CheckStatus(r.Status)">@r.Status</span>
+                        </td>
+                        <td>@r.LastUpdate</td>
+                        <td>
+                            @if (r.Status == "Paid") {
+                                <button disabled class="btn btn-primary btn-sm">Success</button>
+                            } else {
+                                <button class="btn btn-success btn-sm" onclick="@IncrementConfirm(r)">Confirm</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
 @code {
+
+    private PDSFilter filter = new PDSFilter();
     private OrderHeader[]? obj;
 
     protected override async Task OnInitializedAsync()
@@ -60,5 +82,17 @@ else
 
     private string IncrementConfirm(object obj) {
         return "Increment";
+    }
+
+    private async Task OnSearch() {
+        obj = await OrderService.GetForecastAsync(DateOnly.FromDateTime(filter.FilterDate));
+    }
+
+    private string CheckStatus(string? txt) {
+        string className = "text-success";
+        if (txt.Length > 5) {
+            className = "text-warning";
+        }
+        return className;
     }
 }
