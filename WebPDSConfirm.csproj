@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Blazor.Bootstrap" Version="1.9.5" />
+  </ItemGroup>
+
 </Project>

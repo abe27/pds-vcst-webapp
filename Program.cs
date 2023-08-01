@@ -1,3 +1,4 @@
+using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using WebPDSConfirm.Data;
@@ -5,6 +6,7 @@ using WebPDSConfirm.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddBlazorBootstrap(); // Add this line
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<OrderHeaderService>();

@@ -8,8 +8,27 @@
 </nav>
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <div class="card-text">
+        <div class="d-inline-flex">
+            <div class="pr-3">
+                <div class="card-text">
+                    คลังสินค้า:
+                    @* <AutoComplete
+                        @bind-Value="customerName"
+                        TItem="Customer"
+                        DataProvider="CustomersDataProvider"
+                        PropertyName="CustomerName"
+                        Placeholder="Search a customer..."
+                        OnChanged="(Customer customer) => OnAutoCompleteChanged(customer)" /> *@
+                </div>
+            </div>
+            <div class="">
+                <p class="card-text">รหัสผู้ขาย:</p>
+            </div>
+        </div>
+        <div class="card-text">รหัสแผนก:</div>
+        <div class="card-text">เลขที่ INVOCIE:</div>
+    </div>
   </div>
 </div>
 
@@ -75,6 +94,7 @@
 </div>
 
 @code {
-  [Parameter]
-  public string RefId { get; set; }
+    [Parameter]
+    public string RefId { get; set; }
+
 }
